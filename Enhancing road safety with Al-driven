@@ -1,0 +1,56 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+
+# Load traffic accident dataset
+data = pd.read_csv("traffic_accidents.csv")
+
+# Preview data
+print(data.head())
+
+# Basic info
+print(data.info())
+
+# Clean missing values
+data = data.dropna()
+
+# Example: EDA - Plot number of accidents by weather conditions
+plt.figure(figsize=(8, 5))
+sns.countplot(x='Weather_Condition', data=data)
+plt.title('Accidents by Weather Condition')
+plt.xticks(rotation=45)
+plt.show()
+
+# Example: Correlation heatmap for numerical columns
+plt.figure(figsize=(8, 6))
+sns.heatmap(data.corr(), annot=True, cmap='coolwarm')
+plt.title('Feature Correlation Heatmap')
+plt.show()
+
+# Select features for prediction
+features = ['Time', 'Weather_Condition', 'Road_Condition']
+target = 'Accident_Severity'
+
+# Convert categorical variables to numerical (one-hot encoding)
+data_encoded = pd.get_dummies(data[features])
+
+# Prepare target variable
+y = data[target]
+
+# Train/test split
+X_train, X_test, y_train, y_test = train_test_split(data_encoded, y, test_size=0.2, random_state=42)
+
+# Build Random Forest Classifier
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = model.predict(X_test)
+
+# Evaluate model
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
+
