@@ -53,4 +53,44 @@ y_pred = model.predict(X_test)
 # Evaluate model
 print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
+# Project Structure:
+# Enhancing Road Safety with AI-Driven Traffic Accident Analysis and Prediction
+
+
+# Root Directory
+|-- backend/
+
+|	|-- app.py	# Main Flask application
+|	|-- models.py	# Database models and schemas
+|	|-- routes.py	# API endpoints
+|
+|	|-- utils.py
+|-- ml/	# Helper functions
+|	|-- prediction.py	# ML model for predictions
+|	|-- training.py	# Script for model training
+|-- frontend/
+|	|-- src/
+|	|-- components/
+|	|-- pages/
+|	|-- App.js
+|	|-- index.js
+|	|-- public/ 
+|	|-- package.json
+|-- database/
+|	|-- db_config.py	# Database configuration
+|	|-- migrations/
+|-- config/
+|	|-- settings.py	# Global settings and configurations
+|-- Dockerfile
+|-- docker-compose.yml
+|-- README.md
+
+
+# Initial setup scripts and Flask application # app.py
+from flask import Flask, jsonify from routes import accident_routes
+
+app = Flask(	name	) app.register_blueprint(accident_routes, url_prefix='/api')
+
+@app.route('/') def home():
+return jsonify({"message": "AI-Driven Traffic Accident Analysis API 
 
